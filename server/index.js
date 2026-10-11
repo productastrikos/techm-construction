@@ -10,7 +10,8 @@ const { WebSocketServer } = require('ws');
 const pkg = require('./package.json');
 
 const PORT = Number(process.env.PORT) || 4333;
-const HOST = '0.0.0.0';
+// loopback by default: nginx proxies to 127.0.0.1 (see DEPLOY.md). Set HOST=0.0.0.0 only for a container / LAN demo.
+const HOST = process.env.HOST || '127.0.0.1';
 const STEP_MS = Number(process.env.TICKET_STEP_MS) > 0 ? Number(process.env.TICKET_STEP_MS) : 2500;
 const ASSIGN_DELAY = STEP_MS; // new -> assigned
 const START_DELAY = Math.round(STEP_MS * 2.8); // new -> in_progress (2.5s / 7s by default)
@@ -263,6 +264,8 @@ function readJson(req) {
       if (failed) return;
       const raw = Buffer.concat(chunks).toString('utf8').trim();
       if (!raw) return resolve({});
+      // a body must be declared JSON: plain-text / form posts from other sites are rejected (simple-request CSRF)
+      if (!/^application\/json/i.test(String(req.headers['content-type'] || ''))) return reject(new HttpError(415, 'unsupported_media_type', { message: 'Content-Type must be application/json' }));
       try {
         const v = JSON.parse(raw);
         if (v === null || typeof v !== 'object' || Array.isArray(v)) return reject(new HttpError(400, 'invalid_json', { message: 'Body must be a JSON object' }));

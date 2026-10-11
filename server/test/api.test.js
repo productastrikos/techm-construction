@@ -276,3 +276,15 @@ test('websocket rejects other paths', async () => {
     ws.on('open', () => { ws.close(); resolve(); assert.fail('should not open'); });
   });
 });
+
+test('mutating routes reject a body that is not declared application/json (CSRF hardening)', async () => {
+  const res = await fetch(base + '/api/tickets', { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: '{"title":"x"}' });
+  assert.equal(res.status, 415);
+  const ok = await j('POST', '/api/tickets', { title: 'json is fine' });
+  assert.equal(ok.status, 201);
+});
+
+test('binds to loopback by default', () => {
+  const src = require('node:fs').readFileSync(require('node:path').join(__dirname, '..', 'index.js'), 'utf8');
+  assert.match(src, /process\.env\.HOST \|\| '127\.0\.0\.1'/);
+});

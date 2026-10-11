@@ -126,6 +126,7 @@ pm2 ls        # both processes "online"
 - The app works fully if the backend is down: it falls back to its built-in local simulation. The **Integrations**
   tab then shows "API offline".
 - On every page load the app calls `POST /api/reset` so a demo always starts from the seed state (work-order ids restart at the seed). If several people use the same deployment at once they will reset each other's tickets - fine for a demo, not for production.
+- The hub binds to `127.0.0.1` by default (nginx proxies to it locally). Only set `HOST=0.0.0.0` for a container or LAN demo. It has **no authentication** by design (public demo, simulated in-memory data; CORS is `*` because the SPA is on another origin); mutating routes with a body require `Content-Type: application/json`. Do not put real credentials or client data behind it.
 - Everything the hub does is **simulated** (no real ServiceNow/Jira/Maximo/SAP/Teams calls); state is in memory and
   resets on restart or `POST /api/reset`.
 - Local dev: `app` runs on 5176 and proxies `/api` and `/ws` to `127.0.0.1:4333` (`app/.env.development` is empty on
