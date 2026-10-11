@@ -1,0 +1,169 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------------------------
+   Design tokens. Tech Mahindra x Astrikos "control tower" look: warm off-white canvas, white
+   cards, near-black ink, TM red as the single brand accent. Dark theme = true black + red.
+   Everything uses CSS variables so the theme flips without re-render.
+   Logical properties only (ms-/me-/ps-/pe-/start/end) so Arabic RTL is correct from day one.
+   --------------------------------------------------------------------------------------------- */
+:root,
+[data-theme="light"] {
+  color-scheme: light;
+  --bg: #f7f4ee;
+  --surface: #ffffff;
+  --surface-2: #f4f1ea;
+  --surface-3: #ebe6db;
+  --line: #e9e4d9;
+  --line-2: #d8d1c2;
+  --text: #101114;
+  --muted: #3a3d44;
+  --dim: #6a6d75;
+  --accent: #dc1228;
+  --accent-ink: #ffffff;
+  --good: #15803d;
+  --bad: #c8102e;
+  --warn: #b45309;
+  --info: #1d6fb8;
+  --violet: #7b1030;
+  --violet-ink: #ffffff;
+  --grid: rgba(16, 17, 20, 0.09);
+  --shadow: 0 1px 2px rgba(40, 30, 10, 0.06), 0 6px 18px rgba(40, 30, 10, 0.06);
+  --scrim: rgba(247, 244, 238, 0.78);
+  --logo-tile: transparent;
+  --astrikos-filter: none;
+}
+[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0b0b0c;
+  --surface: #151516;
+  --surface-2: #1d1d1f;
+  --surface-3: #28282b;
+  --line: #2a2a2d;
+  --line-2: #3b3b40;
+  --text: #f4f4f5;
+  --muted: #c4c4ca;
+  --dim: #8f8f98;
+  --accent: #f0364b;
+  --accent-ink: #ffffff;
+  --good: #3fcf8e;
+  --bad: #ff6b6b;
+  --warn: #f7b84b;
+  --info: #5bb8ff;
+  --violet: #ff7a9c;
+  --violet-ink: #1b0710;
+  --grid: rgba(255, 255, 255, 0.08);
+  --shadow: 0 1px 0 rgba(255,255,255,0.03) inset, 0 8px 24px rgba(0,0,0,0.4);
+  --scrim: rgba(0, 0, 0, 0.72);
+  --logo-tile: #ffffff;
+  --astrikos-filter: brightness(1.9);
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-line: var(--line);
+  --color-line-2: var(--line-2);
+  --color-ink: var(--text);
+  --color-muted: var(--muted);
+  --color-dim: var(--dim);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-good: var(--good);
+  --color-bad: var(--bad);
+  --color-warn: var(--warn);
+  --color-info: var(--info);
+  --color-violet: var(--violet);
+  --font-sans: "Inter Variable", "IBM Plex Sans Arabic", system-ui, "Segoe UI", sans-serif;
+  --font-arabic: "IBM Plex Sans Arabic", "Inter Variable", system-ui, "Segoe UI", sans-serif;
+  --font-mono: ui-monospace, "Cascadia Mono", "Consolas", monospace;
+}
+
+html, body, #root { height: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+html[lang="ar"] body, html[lang="ar"] button, html[lang="ar"] input, html[lang="ar"] select { font-family: var(--font-arabic); }
+html[lang="ar"] body { font-size: 14.5px; line-height: 1.6; }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+*:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+::selection { background: color-mix(in srgb, var(--accent) 40%, transparent); }
+
+/* numbers always LTR-isolated and tabular so tables stay aligned in RTL */
+.num { font-variant-numeric: tabular-nums; unicode-bidi: isolate; direction: ltr; display: inline-block; }
+.mono { font-family: var(--font-mono); }
+
+/* thin scrollbars */
+* { scrollbar-width: thin; scrollbar-color: var(--line-2) transparent; }
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+
+/* large-text projector mode */
+html[data-big="1"] body { font-size: 16.5px; }
+html[data-big="1"][lang="ar"] body { font-size: 17px; }
+
+/* dense mode */
+html[data-density="compact"] .card-pad { padding: 0.55rem 0.7rem; }
+
+@keyframes pulse-ring { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--bad) 55%, transparent);} 100% { box-shadow: 0 0 0 10px transparent; } }
+@keyframes fade-up { from { opacity: 0; transform: translateY(6px);} to { opacity: 1; transform: none; } }
+@keyframes shimmer { 0% { background-position: -200px 0;} 100% { background-position: 200px 0; } }
+.anim-in { animation: fade-up .28s ease both; }
+.pulse-bad { animation: pulse-ring 1.6s infinite; }
+.skeleton { background: linear-gradient(90deg, var(--surface-2) 0, var(--surface-3) 50%, var(--surface-2) 100%); background-size: 400px 100%; animation: shimmer 1.2s infinite linear; border-radius: 6px; }
+
+/* RTL: mirror directional icons */
+[dir="rtl"] .flip-rtl { transform: scaleX(-1); }
+
+@media print {
+  body { overflow: visible; background: #fff; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+}
+
+/* board-briefing print sheet */
+@media print {
+  body * { visibility: hidden; }
+  .print-sheet, .print-sheet * { visibility: visible; }
+  .print-overlay { position: absolute !important; inset: 0 !important; background: #fff !important; overflow: visible !important; padding: 0 !important; }
+  .print-sheet { box-shadow: none !important; margin: 0 !important; width: 100% !important; }
+  .print-hide { display: none !important; }
+  html, body, #root { height: auto !important; overflow: visible !important; }
+}
+
+/* ---------------------------------------------------------------------------------------------
+   AI layer: shared animation primitives (thinking steps, typewriter caret, scan sweep, glow)
+   --------------------------------------------------------------------------------------------- */
+@keyframes ai-caret { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+@keyframes ai-spin { to { transform: rotate(360deg); } }
+@keyframes ai-sweep-x { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+@keyframes ai-scan-y { 0% { top: -4%; opacity: 0; } 8% { opacity: 1; } 92% { opacity: 1; } 100% { top: 104%; opacity: 0; } }
+@keyframes ai-glow { 0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--violet) 0%, transparent); } 50% { box-shadow: 0 0 0 3px color-mix(in srgb, var(--violet) 35%, transparent); } }
+@keyframes ai-pop { 0% { opacity: 0; transform: scale(.85) translateY(6px); } 100% { opacity: 1; transform: none; } }
+@keyframes ai-row-flash { 0% { background: color-mix(in srgb, var(--violet) 32%, transparent); } 100% { background: transparent; } }
+@keyframes ai-draw { from { stroke-dashoffset: var(--len, 400); } to { stroke-dashoffset: 0; } }
+.ai-caret { display: inline-block; width: 7px; height: 1em; margin-inline-start: 2px; vertical-align: -2px; background: var(--violet); animation: ai-caret .9s steps(1) infinite; border-radius: 1px; }
+.ai-spin { animation: ai-spin .8s linear infinite; }
+.ai-glow { animation: ai-glow 1.6s ease-in-out infinite; }
+.ai-pop { animation: ai-pop .35s cubic-bezier(.2,.8,.2,1) both; }
+.ai-row-flash { animation: ai-row-flash 1.4s ease-out both; }
+.ai-bar { position: relative; overflow: hidden; }
+.ai-bar::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--violet) 55%, transparent), transparent); animation: ai-sweep-x 1.2s ease-in-out infinite; }
+.ai-scanline { position: absolute; inset-inline: 0; height: 3px; pointer-events: none; background: linear-gradient(90deg, transparent, var(--violet), transparent); box-shadow: 0 0 22px 6px color-mix(in srgb, var(--violet) 55%, transparent); animation: ai-scan-y 2.4s ease-in-out both; }
+.ai-draw { stroke-dasharray: var(--len, 400); animation: ai-draw 1.3s ease-out both; }
+
+/* AI layer: always larger than body copy, violet-tinted so generated content is instantly recognisable */
+.ai-body { font-size: 14px; line-height: 1.55; color: color-mix(in srgb, var(--violet) 52%, var(--text)); }
+.ai-body p, .ai-body li, .ai-body span { color: inherit; }
+.ai-body b, .ai-body strong { color: var(--violet); }

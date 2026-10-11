@@ -1,0 +1,23 @@
+import { launch, openPage, outDir } from './lib.mjs';
+const lang = process.argv[2] || 'en';
+const [w, h] = (process.argv[3] || '1366x768').split('x').map(Number);
+const only = process.argv[4];
+const browser = await launch();
+const dir = outDir('wi');
+const run = async (name, route, pre) => {
+  if (only && only !== name) return;
+  const { ctx, page, log } = await openPage(browser, { w, h, lang, route });
+  await page.waitForTimeout(2500);
+  if (pre) await pre(page);
+  await page.waitForTimeout(2500);
+  await page.screenshot({ path: `${dir}/${name}_${lang}_${w}x${h}.png` });
+  console.log(name, JSON.stringify({ errors: log.errors, pageErrors: log.pageErrors, failed: log.failed }));
+  await ctx.close();
+};
+await run('supplymap', '/whatif/supply', async (p) => { await p.click('button[aria-pressed]:has-text("Closed"), button[aria-pressed]:has-text("مغلق")'); await p.evaluate(() => document.querySelector('[data-testid="whatif-page"]').scrollTo(0, 560)); });
+await run('cal', '/whatif/calendar', async (p) => { await p.click('button[aria-pressed]:has-text("Ramadan + Eid"), button[aria-pressed]:has-text("رمضان + العيد")'); });
+await run('cal2', '/whatif/calendar', async (p) => { await p.click('button[aria-pressed]:has-text("Ramadan + Eid"), button[aria-pressed]:has-text("رمضان + العيد")'); await p.evaluate(() => document.querySelector('[data-testid="whatif-page"]').scrollTo(0, 650)); });
+await run('equip', '/whatif/equipment', async (p) => { await p.evaluate(() => window.__app.getState().setSimT(75 + 10.35)); });
+await run('equip2', '/whatif/equipment', async (p) => { await p.evaluate(() => window.__app.getState().setSimT(75 + 10.35)); await p.waitForTimeout(1500); await p.evaluate(() => document.querySelector('[data-testid="whatif-page"]').scrollTo(0, 600)); });
+await run('stress', '/whatif/stress');
+await browser.close();

@@ -1,0 +1,15 @@
+{
+  "name": "techm-construction-server",
+  "version": "1.0.0",
+  "description": "Simulated integration hub (REST + websocket) for the Mazzant Construction PoC",
+  "private": true,
+  "main": "index.js",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "start": "node index.js",
+    "test": "node --test test/api.test.js"
+  },
+  "dependencies": {
+    "ws": "^8.18.0"
+  }
+}

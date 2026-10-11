@@ -1,0 +1,40 @@
+# dependencies / build output
+node_modules/
+dist/
+app/dist/
+app/node_modules/
+server/node_modules/
+
+# logs, caches, OS junk
+*.log
+.firecrawl/
+.DS_Store
+Thumbs.db
+desktop.ini
+*.tmp
+
+# verification / test output (app/scripts write to app/.verify via lib.mjs outDir())
+.verify/
+.verify-dev.log
+app/.verify/
+app/test-results/
+app/screens/
+test-results/
+playwright-report/
+
+# local rehearsal output
+.rehearsal-dist/
+
+# heavy / source-only assets kept local
+assets_src/
+demo_video/
+/*.pptx
+/TM_Logo*.jpg
+/Tech_Mahindra*.png
+
+# env files: ignore by default, but the public-URL ones are required by the deployment guide
+.env
+.env.*
+!app/.env.production
+!app/.env.example
+!app/.env.development
