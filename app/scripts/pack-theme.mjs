@@ -13,6 +13,7 @@ for (const c of cases) {
     const ctx = await browser.newContext({ viewport: { width: 1366, height: 768 } });
     await ctx.addInitScript(([p, th]) => {
       try {
+        sessionStorage.setItem('mz.auth', 'admin');
         localStorage.setItem('mz.pack', JSON.stringify(p));
         localStorage.setItem('mz.theme', JSON.stringify(th));
         localStorage.setItem('mz.lang', JSON.stringify('en'));

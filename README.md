@@ -19,6 +19,7 @@ Useful keys: `Ctrl+J` AI Copilot, `Ctrl+K` search, `Ctrl+Shift+P` presenter pane
 | Logistics | Simulated adapter, no operator connection | Port / free-zone / freight APIs |
 | **AI Copilot and AI panels** | **Numbers are computed live by the engines; wording and animation are scripted. No language model is connected** | LLM grounded on project data with audit trail |
 | **S!a Excel-lence** | Link-out to the separate hosted demo (internet needed) + CSV export. Not embedded | Embedded with SSO and live data connection |
+| **Sign-in** | Client-side demo gate (`app/src/app/auth.ts`); one demo account, credentials ship in the bundle, override with `VITE_DEMO_USER` / `VITE_DEMO_PASS` at build time. Not real security | SSO (OIDC / SAML) with server-side sessions |
 
 The on-screen SIMULATED / AI DEMO labels were removed for the client presentation; this table (and *Integrations > Mock vs real*) is where the mock-vs-real split is documented. The ticketing integrations (ServiceNow, Jira, Maximo, SAP PM, Teams) are simulated by `server/` - no real calls are made.
 

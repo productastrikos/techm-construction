@@ -39,6 +39,7 @@ export async function openPage(browser, { w = 1366, h = 768, lang = 'en', theme 
   const ctx = await browser.newContext({ viewport: { width: w, height: h } });
   await ctx.addInitScript(([l, th]) => {
     try {
+      sessionStorage.setItem('mz.auth', 'admin');
       localStorage.setItem('mz.lang', JSON.stringify(l));
       localStorage.setItem('mz.theme', JSON.stringify(th));
     } catch {}

@@ -33,6 +33,7 @@ import { fmtDate } from '../lib/fmt';
 import { PresenterPanel } from './Presenter';
 import { CommandPalette } from './CommandPalette';
 import { CreditsDialog } from './Credits';
+import { LogoutButton } from './LoginPage';
 import { Copilot, openCopilot } from '../features/ai/Copilot';
 import { resetDemo } from './resetDemo';
 import { useDataReady, usePack } from '../sim/useSim';
@@ -271,6 +272,7 @@ function Header() {
       <Btn variant={presenter ? 'soft' : 'ghost'} className="!px-2" onClick={() => setPresenter(!presenter)} aria-label={t('hdr.presenter')} title={`${t('hdr.presenter')} (Ctrl+Shift+P)`}>
         <Presentation size={17} />
       </Btn>
+      <LogoutButton />
       <span className="sr-only">{i18n.language}</span>
     </header>
   );
