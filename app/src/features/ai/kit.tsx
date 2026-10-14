@@ -63,7 +63,7 @@ export function AiTag({ className, label }: { className?: string; label?: string
     <span
       title={t('ai.tagTip')}
       className={cx('inline-flex items-center gap-1 rounded-full px-2 py-[2px] text-[11px] font-bold uppercase tracking-wider whitespace-nowrap leading-[1.4]', className)}
-      style={{ background: 'var(--violet)', color: 'var(--violet-ink)' }}
+      style={{ background: 'var(--violet-solid)', color: 'var(--violet-solid-ink)' }}
     >
       <Sparkles size={11} />
       {label ?? t('ai.tag')}

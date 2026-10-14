@@ -1,5 +1,6 @@
 import { type ReactNode, type ButtonHTMLAttributes, type CSSProperties } from 'react';
 import { useTranslation } from 'react-i18next';
+import { ChevronRight, Sparkles } from 'lucide-react';
 import { openKpi } from '../features/kpi/kpiStore';
 
 export type Tone = 'good' | 'bad' | 'warn' | 'info' | 'violet' | 'neutral' | 'accent';
@@ -145,6 +146,19 @@ export function Seg<T extends string | number>({
 }
 
 /* ------------------------------------------------------------------ Kpi */
+function kpiStatus(tone: Tone, ar: boolean): { label: string; tone: Tone } {
+  switch (tone) {
+    case 'good':
+      return { label: ar ? 'على المسار' : 'On track', tone: 'good' };
+    case 'warn':
+      return { label: ar ? 'يحتاج متابعة' : 'Watch', tone: 'warn' };
+    case 'bad':
+      return { label: ar ? 'معرّض للخطر' : 'At risk', tone: 'bad' };
+    default:
+      return { label: ar ? 'محدّث مباشرة' : 'Updated live', tone: 'neutral' };
+  }
+}
+
 export function Kpi({
   label,
   value,
@@ -173,10 +187,26 @@ export function Kpi({
   compact?: boolean;
 }) {
   const c = toneVar[tone === 'neutral' ? 'accent' : tone];
+  const { i18n } = useTranslation();
+  const ar = i18n.language === 'ar';
+  // every KPI tile opens the detail panel (value, day filter, 7 / 30 / 90 day prediction); the tile's own navigation becomes "Open full page"
+  const text = (n: ReactNode) => (typeof n === 'string' ? n : typeof n === 'number' ? String(n) : undefined);
+  const lbl = text(label);
+  const val = text(value);
+  const panel = lbl && val ? () => openKpi({ label: lbl, value: val, unit: text(unit), hint: text(hint), delta: text(delta), tone, goto: onClick }) : onClick;
+  const status = kpiStatus(tone, ar);
+  const details = (
+    <span className="ms-auto shrink-0 inline-flex items-center gap-0.5 font-semibold" style={{ color: 'var(--violet)' }}>
+      <Sparkles size={compact ? 10 : 11} />
+      {ar ? 'التفاصيل' : 'Details'}
+      <ChevronRight size={compact ? 11 : 12} className="flip-rtl transition-transform group-hover:translate-x-0.5" />
+    </span>
+  );
   const inner = (
     <>
-      <div className="flex items-center gap-1.5 text-[11.5px] text-muted font-medium truncate">
+      <div className="flex items-center gap-1.5 text-[11.5px] text-muted font-medium min-w-0">
         <span className="truncate">{label}</span>
+        {panel && compact && details}
       </div>
       <div className="mt-0.5 flex items-baseline gap-1.5 min-w-0">
         <span className={cx('leading-tight font-semibold tracking-tight num', compact ? 'text-[19px]' : 'text-[24px]')} style={{ color: tone === 'neutral' ? 'var(--text)' : c }}>
@@ -191,14 +221,18 @@ export function Kpi({
       </div>
       {hint && !compact && <div className="text-[11px] text-dim truncate">{hint}</div>}
       {spark && spark.length > 1 && <Spark data={spark} color={c} className="absolute bottom-0 end-0 opacity-70" />}
+      {panel && !compact && (
+        <div className="relative mt-1.5 pt-1.5 border-t border-line flex items-center gap-2 text-[10.5px] uppercase tracking-wider">
+          <span className="inline-flex items-center gap-1 font-bold truncate" style={{ color: status.tone === 'neutral' ? 'var(--dim)' : toneVar[status.tone] }}>
+            <span className="inline-block size-1.5 rounded-full shrink-0" style={{ background: status.tone === 'neutral' ? 'var(--dim)' : toneVar[status.tone] }} />
+            {status.label}
+          </span>
+          <span className="normal-case text-[11.5px] ms-auto inline-flex">{details}</span>
+        </div>
+      )}
     </>
   );
-  // every KPI tile opens the detail panel (value, 7 / 30 day prediction); the tile's own navigation becomes "Open full page"
-  const text = (n: ReactNode) => (typeof n === 'string' ? n : typeof n === 'number' ? String(n) : undefined);
-  const lbl = text(label);
-  const val = text(value);
-  const panel = lbl && val ? () => openKpi({ label: lbl, value: val, unit: text(unit), hint: text(hint), delta: text(delta), tone, goto: onClick }) : onClick;
-  const cls = cx('rounded-xl border border-line bg-surface shadow-[var(--shadow)] text-start min-w-0 relative overflow-hidden', compact ? 'px-3 py-1.5' : 'px-3.5 py-2.5', panel && 'hover:bg-surface-2 transition-colors cursor-pointer', className);
+  const cls = cx('group rounded-xl border border-line bg-surface shadow-[var(--shadow)] text-start min-w-0 relative overflow-hidden', compact ? 'px-3 py-1.5' : 'px-3.5 py-2.5', panel && 'hover:bg-surface-2 hover:border-[color-mix(in_srgb,var(--violet)_55%,var(--line))] transition-colors cursor-pointer', className);
   return panel ? (
     <button type="button" onClick={panel} className={cls} data-kpi={lbl}>
       {inner}

@@ -83,9 +83,9 @@ export function AdvisoryStrip() {
   const asAt = `${fmtDate(snap.nowT, lang, 'short')} ${String(hh).padStart(2, '0')}:42 GST`;
   return (
     <div className="shrink-0 px-4 pt-2.5" data-testid="ai-advisory">
-      <div className="flex items-center gap-4 rounded-xl px-4 py-2.5 text-white" style={{ background: 'linear-gradient(90deg, #17141b 0%, #1d1822 100%)', border: '1px solid rgba(255,255,255,0.08)' }}>
+      <div className="flex items-center gap-4 rounded-xl px-4 py-2.5 text-white" style={{ background: 'linear-gradient(90deg, #17122a 0%, #1f1740 100%)', border: '1px solid rgba(139,92,246,0.35)' }}>
         <div className="shrink-0 leading-tight">
-          <div className="flex items-center gap-1.5 text-[11px] font-bold tracking-[0.12em] uppercase" style={{ color: '#ff8fb0' }}>
+          <div className="flex items-center gap-1.5 text-[11px] font-bold tracking-[0.12em] uppercase" style={{ color: '#a78bfa' }}>
             <Sparkles size={13} /> {L('AI Advisory', 'استشارة الذكاء الاصطناعي')}
           </div>
           <div className="text-[10.5px] text-white/50 num">{L('as at', 'حتى')} {asAt}</div>

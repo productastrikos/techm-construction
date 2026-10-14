@@ -41,6 +41,7 @@ import { tx } from '../lib/bi';
 import { AdvisoryStrip } from '../features/ai/Advisory';
 import { PageKpis } from '../features/kpi/PageKpis';
 import { ActionPanel } from '../features/ai/ActionPanel';
+import { openActions } from '../features/ai/actionStore';
 import { KpiPanel } from '../features/kpi/KpiPanel';
 import { useIntegration } from '../features/workorders/integrationStore';
 
@@ -206,8 +207,8 @@ function Header() {
   const presenter = useApp((s) => s.presenter);
   const setPresenter = useApp((s) => s.setPresenter);
   return (
-    <header className="h-14 shrink-0 border-b border-line bg-surface flex items-center gap-2.5 px-4 min-w-0">
-      <div className="min-w-0 leading-tight">
+    <header className="h-14 shrink-0 border-b border-line bg-surface flex items-center gap-2 px-4 min-w-0">
+      <div className="min-w-[150px] leading-tight">
         <div className="flex items-center gap-2">
           <span className="text-[15px] font-semibold tracking-tight truncate">{tx(pack.config.name, lang)}</span>
         </div>
@@ -225,27 +226,38 @@ function Header() {
       <button
         type="button"
         onClick={() => openCopilot()}
-        className="flex items-center gap-1.5 h-9 shrink-0 whitespace-nowrap rounded-lg px-3 text-[12.5px] font-semibold border border-transparent transition-colors hover:brightness-110 ai-glow"
-        style={{ color: 'var(--violet-ink)', background: 'var(--violet)' }}
+        className="flex items-center gap-1.5 h-9 shrink-0 whitespace-nowrap rounded-lg px-3 text-[12.5px] font-semibold border transition-colors hover:brightness-110"
+        style={{ color: 'var(--violet)', borderColor: 'color-mix(in srgb, var(--violet) 55%, transparent)', background: 'color-mix(in srgb, var(--violet) 10%, transparent)' }}
         title={`${t('ai.title')} (Ctrl+J)`}
         data-testid="ask-ai"
       >
         <Sparkles size={14} />
         {t('hdr.ai')}
       </button>
+      <button
+        type="button"
+        onClick={() => openActions()}
+        className="flex items-center gap-1.5 h-9 shrink-0 whitespace-nowrap rounded-lg px-3 text-[12.5px] font-bold border border-transparent transition-colors hover:brightness-110 ai-glow"
+        style={{ color: 'var(--violet-solid-ink)', background: 'var(--violet-solid)', boxShadow: '0 2px 10px color-mix(in srgb, var(--violet-solid) 35%, transparent)' }}
+        title={lang === 'ar' ? 'استشارة الذكاء الاصطناعي والإجراءات الموصى بها' : 'AI advisory and recommended actions'}
+        data-testid="ai-advisory-btn"
+      >
+        <Sparkles size={14} />
+        {lang === 'ar' ? 'استشارة ذكية' : 'AI Advisory'}
+      </button>
       <ClockControls />
       <Select<Role>
         ariaLabel={t('hdr.role')}
         value={role}
         onChange={setRole}
-        className="!h-9 w-[152px] shrink-0"
+        className="!h-9 w-[140px] shrink-0"
         options={ROLES.map((r) => ({ value: r, label: t(`role.${r}`) }))}
       />
       <Select<'port' | 'highway'>
         ariaLabel={t('hdr.pack')}
         value={packId}
         onChange={setPack}
-        className="!h-9 w-[108px] shrink-0 hidden lg:block"
+        className="!h-9 w-[92px] shrink-0 hidden lg:block"
         options={[
           { value: 'port', label: t('pack.portShort') },
           { value: 'highway', label: t('pack.highwayShort') },

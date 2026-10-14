@@ -31,6 +31,13 @@ The on-screen SIMULATED / AI DEMO labels were removed for the client presentatio
 - Command-centre "Good morning" hero hidden; *Watch the AI at work* stays.
 - Deployment: see `DEPLOY.md` (frontend 3333, backend 4333, `techm-construction.astrikos.xyz`). Hub API: `server/README.md`.
 
+## Reference-UI round (Oct 14 2026) - read `docs/08_REFERENCE_API_AND_AI_UX.md`
+- **KPI cards say they are clickable**: status word (On track / Watch / At risk) and a violet *Details >* link on every tile.
+- **KPI panel**: day filter **7D / 14D / 30D / 90D**, **Forecast** and **Compare previous** toggles, an AI **Forecast** button (replays the reasoning steps), forecast / range / vs-today tiles, drivers, recommended actions with **Apply** (raises a work order through the hub). Forecasts are deterministic trend + band, not engine output.
+- **Drone imagery** (Portfolio): 30D / 90D / 180D / since-start / start-to-finish presets, two flight-date dropdowns and a clickable flight timeline; % complete per flight comes from the schedule engine, the stills are illustrations.
+- **AI is violet** again (brand stays Tech Mahindra red); header has *Copilot* and *AI Advisory* buttons.
+- **Sign-in page**: 7-slide deck about the PoC plus a *KPI & UX overview* tab (card anatomy, KPI catalogue with live day filter / forecast preview, UI conventions, suggested demo path). Verify with `node scripts/login-tour.mjs` and `node scripts/kpi-drone.mjs`.
+
 ## AI moments to show (about 4 minutes)
 1. **Home** - the morning briefing writes itself (reasoning steps, then typed text). Press *Watch the AI at work* (or `Ctrl+J` > Play AI demo): the Copilot asks itself three questions and answers them from the live engines (biggest risk, 12-month Hormuz closure, which crane will fail).
 2. **Procurement** - *Run AI scan*: rows light up one by one, then three findings each with a concrete re-route recommendation.
@@ -49,12 +56,14 @@ Hero flows (H1 Hormuz, H2 Ramadan/summer, H3 crane failure, H4 stress test) are 
 ```
 cd app
 npx tsc --noEmit                 # types
-npx vitest run                   # 88 unit tests
+npx vitest run                   # 95 unit tests
 node scripts/flows.mjs 1440x900  # hero flows H1-H4 (18 checks)
 node scripts/ai-tour.mjs 1440x900 en   # every AI moment, button to result (18 checks)
 node scripts/tabs-tour.mjs 1366x768 en dark   # screenshot every tab -> app/.verify/tabs
 node scripts/dead-buttons.mjs en # click every control, list the ones that change nothing
 node scripts/pack-theme.mjs      # highway pack + light theme smoke
+node scripts/login-tour.mjs      # sign-in deck + KPI & UX overview tab + mobile
+node scripts/kpi-drone.mjs light # KPI Details affordance/panel (day filter, forecast, Apply) + drone date selector
 node scripts/features.mjs light  # client-feedback round: advisory, KPI panels on every page, alert -> ticket -> Work Orders (29 checks; needs server/ running for the live-hub path)
 cd ../server && npm test         # integration hub API (11 tests)
 ```

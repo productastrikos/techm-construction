@@ -24,8 +24,10 @@
   --bad: #c8102e;
   --warn: #b45309;
   --info: #1d6fb8;
-  --violet: #7b1030;
+  --violet: #6d28d9;
   --violet-ink: #ffffff;
+  --violet-solid: #7c3aed;
+  --violet-solid-ink: #ffffff;
   --grid: rgba(16, 17, 20, 0.09);
   --shadow: 0 1px 2px rgba(40, 30, 10, 0.06), 0 6px 18px rgba(40, 30, 10, 0.06);
   --scrim: rgba(247, 244, 238, 0.78);
@@ -49,8 +51,10 @@
   --bad: #ff6b6b;
   --warn: #f7b84b;
   --info: #5bb8ff;
-  --violet: #ff7a9c;
-  --violet-ink: #1b0710;
+  --violet: #a78bfa;
+  --violet-ink: #ffffff;
+  --violet-solid: #8b5cf6;
+  --violet-solid-ink: #ffffff;
   --grid: rgba(255, 255, 255, 0.08);
   --shadow: 0 1px 0 rgba(255,255,255,0.03) inset, 0 8px 24px rgba(0,0,0,0.4);
   --scrim: rgba(0, 0, 0, 0.72);
@@ -75,6 +79,7 @@
   --color-warn: var(--warn);
   --color-info: var(--info);
   --color-violet: var(--violet);
+  --color-violet-solid: var(--violet-solid);
   --font-sans: "Inter Variable", "IBM Plex Sans Arabic", system-ui, "Segoe UI", sans-serif;
   --font-arabic: "IBM Plex Sans Arabic", "Inter Variable", system-ui, "Segoe UI", sans-serif;
   --font-mono: ui-monospace, "Cascadia Mono", "Consolas", monospace;

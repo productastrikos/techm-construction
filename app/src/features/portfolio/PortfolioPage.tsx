@@ -351,7 +351,7 @@ export default function PortfolioPage() {
           type="button"
           onClick={() => window.dispatchEvent(new CustomEvent('mz:copilot', { detail: { auto: true } }))}
           className="inline-flex items-center gap-1.5 h-9 rounded-lg px-3.5 text-[13px] font-semibold shadow-sm hover:brightness-110 transition"
-          style={{ background: 'var(--violet)', color: 'var(--violet-ink)' }}
+          style={{ background: 'var(--violet-solid)', color: 'var(--violet-solid-ink)' }}
           data-testid="watch-ai"
         >
           <Play size={14} /> {t('port.aiPlay')}

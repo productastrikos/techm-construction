@@ -2,7 +2,7 @@ import type { Part } from '../dict';
 
 export const ai: Part = {
   en: {
-    'hdr.ai': 'Ask AI',
+    'hdr.ai': 'Copilot',
     'port.aiPlay': 'Watch the AI at work',
     'ai.tag': 'AI',
     'ai.tagTip': 'AI-assisted view. Numbers are computed live by the simulation engines; the wording is scripted for this PoC (no LLM is connected).',

@@ -48,3 +48,11 @@ flows.mjs (hero flows), ai-tour.mjs (every AI moment), tabs-tour.mjs (screenshot
 - `SimChip` renders nothing; "AI demo" tag is now "AI". Remaining honest disclosures: Admin > Integrations/mock tables, a few banners (procurement gateway, ERP, board briefing disclaimer).
 - Backend `server/` (Node + ws, in-memory) - contract in `server/README.md`. Deployment: `DEPLOY.md`, `ecosystem.config.cjs`, `app/.env.production` (public URLs only - the one allowed .env exception, required by the deployment guide). Ports FE 3333 / BE 4333; URL techm-construction.astrikos.xyz.
 - Dev server proxies `/api` and `/ws` to 4333 (vite.config.ts). `scripts/features.mjs` verifies the whole round (29/29).
+
+## 2026-10-14 - reference UI round (read docs/08_REFERENCE_API_AND_AI_UX.md)
+- Studied the Astrikos PDL reference (pdl.astrikos.xyz:8443, user's logged-in built-in browser tab "seed"): API host `pdl-api...:8443/api/v1` (`/kpi`, `/charts/<id>?tf=`, `/state/snapshot`); violet `#8b5cf6` AI; KPI "Details" drawer with tf filter + Forecast/Compare + AI advisory + Apply.
+- Built: `Kpi` card footer (status + Details), `KpiPanel` rewrite + `forecast.ts` `buildSeries()` (API-shaped; `tests/kpi-series.test.ts`), `DroneCompare` date selector, violet AI tokens (`--violet-solid`), header Copilot + AI Advisory buttons, sign-in page deck + overview (`app/src/app/login/Deck.tsx`, `Overview.tsx`).
+- Verified: tsc clean, vitest 95/95, features 29/29, flows 18/18, ai-tour 18/18, login.mjs 6/6, `login-tour.mjs`, `kpi-drone.mjs` (light + dark), Arabic RTL panel screenshot.
+- Dev servers were started hidden for verification: vite 5176 and hub 4333.
+- Demo clock is only ~75 days into a ~2.5 year programme, so short drone presets (30D/90D) compare nearly identical early frames; the default is Start -> finish (forecast).
+- Open: no `/api/v1/kpi` on the hub yet (series is browser-side); KPI breakdown tabs; header is tight at 1366px (role select truncates).

@@ -136,7 +136,7 @@ export function IncidentCard({ incident, onClose }: { incident: Incident; onClos
               <button
                 type="button"
                 className="h-9 px-3.5 rounded-lg text-[13px] font-semibold inline-flex items-center gap-1.5 hover:brightness-110"
-                style={{ background: 'var(--violet)', color: 'var(--violet-ink)' }}
+                style={{ background: 'var(--violet-solid)', color: 'var(--violet-solid-ink)' }}
                 onClick={makeTicket}
                 data-testid="incident-ticket"
               >

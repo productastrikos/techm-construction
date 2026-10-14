@@ -31,7 +31,7 @@ await kpi.click();
 await page.waitForSelector('[data-testid="kpi-panel-body"]', { timeout: 5000 }).catch(() => {});
 await page.waitForTimeout(900);
 check('KPI click opens the right panel', await page.locator('[data-testid="kpi-panel-body"]').count());
-check('KPI panel has 7-day and 30-day charts', (await page.locator('[data-testid="kpi-panel"] canvas').count()) >= 2, `${await page.locator('[data-testid="kpi-panel"] canvas').count()} canvases`);
+check('KPI panel has the prediction chart and day filter', (await page.locator('[data-testid="kpi-panel"] canvas').count()) >= 1 && (await page.locator('[data-testid="kpi-filters"] [data-value]').count()) === 4, `${await page.locator('[data-testid="kpi-panel"] canvas').count()} canvases`);
 await page.screenshot({ path: `${dir}/02_kpi_panel_${theme}.png` });
 await page.keyboard.press('Escape');
 await page.waitForTimeout(400);
